@@ -1,0 +1,101 @@
+Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
+
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        values = []
+        curr = head
+
+        while curr:
+            values.append(curr.val)
+            curr = curr.next
+        return values == values[::-1]
+
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        slow = fast = head
+
+        # Find the middle element
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # reverse second half
+        prev = None
+        while slow != None:
+            # Move pointer in order
+            n_pointer = slow.next
+
+            # Reverse link
+            slow.next = prev
+
+            # update prev and curr
+            prev = slow
+            slow = n_pointer
+
+        # Check palindrome with 2 pointers
+        left = head
+        right = prev
+        while right != None:
+            if left.val != right.val:
+                return False
+            left = left.next
+            right = right.next
+        
+        return True
+
+
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        if not head or not head.next:
+            return True
+
+        # 1) Find middle (slow at mid)
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # If odd length, skip the middle node
+        if fast:
+            slow = slow.next
+
+        # 2) Reverse second half
+        second = self._reverse(slow)
+
+        # 3) Compare first half and reversed second half
+        p1, p2 = head, second
+        result = True
+        while p2:
+            if p1.val != p2.val:
+                result = False
+                break
+            p1 = p1.next
+            p2 = p2.next
+
+        # 4) Restore second half (optional but good practice)
+        self._reverse(second)
+
+        return result
+
+    def _reverse(self, node: Optional[ListNode]) -> Optional[ListNode]:
+        prev = None
+        curr = node
+        while curr:
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+        return prev

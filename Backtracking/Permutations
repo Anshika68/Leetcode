@@ -1,0 +1,16 @@
+Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        def backtrack(start, end):
+            if start == end:
+                result.append(nums[:])
+                return
+            for i in range(start, end):
+                nums[start], nums[i] = nums[i], nums[start]
+                backtrack(start+1, end)
+                nums[start], nums[i] = nums[i], nums[start]
+
+        result = []
+        backtrack(0, len(nums))
+        return result

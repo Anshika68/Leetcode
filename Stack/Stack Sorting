@@ -1,0 +1,11 @@
+input = [34, 3, 31, 98, 92, 23]
+
+stack = []
+
+while input:
+    number = input.pop()
+    while stack and stack[-1] > number:
+        input.append(stack.pop())
+    stack.append(number)
+    
+print(stack)

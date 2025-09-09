@@ -1,1 +1,41 @@
 Given an integer k and a queue of integers, The task is to reverse the order of the first k elements of the queue, leaving the other elements in the same relative order.
+
+from collections import deque
+
+# Function to reverse the first K elements of the Queue
+def reverseFirstK(q, k):
+    if not q or k > len(q):
+        return
+    if k <= 0:
+        return
+
+    s = []
+
+    # Push the first K elements into a Stack
+    for _ in range(k):
+        s.append(q.popleft())
+
+    # Enqueue the contents of stack at the back of the queue
+    while s:
+        q.append(s.pop())
+
+    # Remove the remaining elements and enqueue them at the end of the Queue
+    for _ in range(len(q) - k):
+        q.append(q.popleft())
+
+# Utility Function to print the Queue
+def printQueue(q):
+    while q:
+        print(q.popleft(), end=' ')
+
+if __name__ == '__main__':
+    q = deque()
+    q.append(1)
+    q.append(2)
+    q.append(3)
+    q.append(4)
+    q.append(5)
+
+    k = 3
+    reverseFirstK(q, k)
+    printQueue(q)

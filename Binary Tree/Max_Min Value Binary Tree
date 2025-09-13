@@ -1,0 +1,40 @@
+# BFS
+
+from collections import deque
+
+class newNode:
+    def __init__(self, data):
+        self.val = data
+        self.left = self.right = None
+
+def largest_node_binary_tree(root):
+
+    queue = deque([root])
+    max_node = 0
+
+    while queue:
+        curr_node = queue.popleft()
+        if curr_node.left:
+            queue.append(curr_node.left)
+        if curr_node.right:
+            queue.append(curr_node.right)
+
+        if curr_node.val > max_node:
+            max_node = curr_node.val
+
+    return max_node
+
+# Driver Code
+if __name__ == '__main__':
+    root = newNode(2)
+    root.left = newNode(7)
+    root.right = newNode(5)
+    root.left.right = newNode(6)
+    root.left.right.left = newNode(1)
+    root.left.right.right = newNode(11)
+    root.right.right = newNode(9)
+    root.right.right.left = newNode(4)
+
+    # Function call
+    print("Maximum element is",
+          largest_node_binary_tree(root))

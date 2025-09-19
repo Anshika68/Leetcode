@@ -1,0 +1,65 @@
+from collections import deque, defaultdict
+
+class Graph:
+    def __init__(self):
+        self.graph = defaultdict(list)
+
+    # Add edge to the graph
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+        self.graph[v].append(u)  # for undirected graph
+
+    # BFS Traversal
+    def bfs(self, start):
+        visited = set()
+        queue = deque([start])
+        traversal = []
+
+        while queue:
+            node = queue.popleft()
+            if node not in visited:
+                visited.add(node)
+                traversal.append(node)
+                queue.extend(self.graph[node])
+        return traversal
+
+    # DFS Traversal (Recursive)
+    def dfs_recursive(self, node, visited=None):
+        if visited is None:
+            visited = set()
+        visited.add(node)
+        traversal = [node]
+
+        for neighbor in self.graph[node]:
+            if neighbor not in visited:
+                traversal.extend(self.dfs_recursive(neighbor, visited))
+        return traversal
+
+    # DFS Traversal (Iterative using stack)
+    def dfs_iterative(self, start):
+        visited = set()
+        stack = [start]
+        traversal = []
+
+        while stack:
+            node = stack.pop()
+            if node not in visited:
+                visited.add(node)
+                traversal.append(node)
+                stack.extend(reversed(self.graph[node]))  # reverse for correct order
+        return traversal
+
+
+# Example usage
+if __name__ == "__main__":
+    g = Graph()
+    g.add_edge(0, 1)
+    g.add_edge(0, 2)
+    g.add_edge(1, 3)
+    g.add_edge(1, 4)
+    g.add_edge(2, 5)
+    g.add_edge(2, 6)
+
+    print("BFS Traversal:", g.bfs(0))
+    print("DFS Recursive Traversal:", g.dfs_recursive(0))
+    print("DFS Iterative Traversal:", g.dfs_iterative(0))
